@@ -1,62 +1,145 @@
 
 #include "glfw_helper.h"
 
+void checkGLEW()
+{
+    // To prevent errors with modern OpenGL
+    glewExperimental = 1;
+    GLenum glewError = glewInit();
+    if (glewError != GLEW_OK)
+    {
+        printf("glew init error\n%s\n", glewGetErrorString(glewError));
+    }
+
+    if (!GLEW_VERSION_2_1)
+    {
+        printf("OpenGL 2.1 not supported!\n");
+        return;
+    }
+
+    const GLubyte *p = glGetString(GL_VERSION);
+    printf("Graphics Driver: %s\n", p);
+
+    p = glGetString(GL_SHADING_LANGUAGE_VERSION);
+    printf("GLSL Version: %s\n", p);
+
+    //3. Check for specific functionality
+    if (GLEW_ARB_vertex_array_object)
+    {
+        printf("genVertexArrays supported\n");
+    }
+    if (GLEW_APPLE_vertex_array_object)
+    {
+        printf("genVertexArrayAPPLE supported\n");
+    }
+}
 
 /**
  * Prints OpenGL to the console. 
  * A context must be available to call that function and get valid result.
  */
-void printOpenGLVersion() {
+void printOpenGLVersion()
+{
     const GLubyte *pVersion = glGetString(GL_VERSION);
     printf("OpenGL version: %s\n", pVersion);
 }
 
-int openGLFWindow(int width, int height, char* pszWindowTitle, drawSceneFunc drawScene)
+void destroyGLFWindow(MyWindow *pWindow)
 {
-    GLFWwindow *pWindow;
+    if (pWindow && pWindow->pglfWindow)
+    {
+        glfwDestroyWindow(pWindow->pglfWindow);
+        pWindow->pglfWindow = 0;
+        glfwTerminate();
+    }
+}
+
+int openGLFWindow(MyWindow *pWindow, drawSceneFunc drawScene)
+{
+    GLFWwindow *pglfWindow;
 
     if (!glfwInit())
     {
         printf("GLFW initialization failed\n");
         return EXIT_FAILURE;
     }
-    pWindow = glfwCreateWindow(width, height, pszWindowTitle, NULL, NULL);
+    pglfWindow = glfwCreateWindow(pWindow->width,
+                                  pWindow->height,
+                                  pWindow->pszWindowTitle,
+                                  NULL, NULL);
 
-    if (!pWindow)
+    if (!pglfWindow)
     {
         printf("GLFW window creation failed\n");
         glfwTerminate();
         return EXIT_FAILURE;
     }
 
-    glfwMakeContextCurrent(pWindow);
+    pWindow->pglfWindow = pglfWindow;
+
+    glfwMakeContextCurrent(pglfWindow);
 
     // We need a context to execute this, otherwise null is returned.
     printOpenGLVersion();
+    checkGLEW();
 
-    while (!glfwWindowShouldClose(pWindow))
+    // Configure depth testing
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+
+    // Blending, especially for transparent objects
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    // some default thickness for lines
+    glLineWidth(3);
+
+    // set viewport
+    glfwGetFramebufferSize(pglfWindow, &pWindow->width, &pWindow->height);
+    glViewport(0, 0, pWindow->width, pWindow->height);
+
+    //register callbacks for keyboard and mouse
+    if (pWindow->keyboardCallback)
     {
-        glViewport(0, 0, width, height);
+        glfwSetKeyCallback(pglfWindow, pWindow->keyboardCallback);
+    }
+
+    if (pWindow->cursorPosCallback)
+    {
+        glfwSetCursorPosCallback(pglfWindow, pWindow->cursorPosCallback);
+    }
+    
+    if (pWindow->mouseButtonCallback)
+    {
+        glfwSetMouseButtonCallback(pglfWindow, pWindow->mouseButtonCallback);
+    }
+
+    while (!glfwWindowShouldClose(pglfWindow))
+    {
+        glViewport(0, 0, pWindow->width, pWindow->height);
         // Clear contents and set background color
-        glClearColor(1, 0, 1, 1);
+        glClearColor(pWindow->clearColors.red,
+                     pWindow->clearColors.green,
+                     pWindow->clearColors.blue,
+                     pWindow->clearColors.alpha);
         // also clear the depth buffer
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        if(drawScene) {
+        if (drawScene)
+        {
             drawScene();
         }
 
         // After drawing we switch the buffers(front, back)
-        glfwSwapBuffers(pWindow);
+        glfwSwapBuffers(pglfWindow);
         // Listening for Window events
         glfwPollEvents();
     }
 
+    /*
     //Destroy window and terminate glfw in a clean way
-    glfwDestroyWindow(pWindow);
+    glfwDestroyWindow(pglfWindow);
 
     glfwTerminate();
-
+*/
     return 0;
 }
-
