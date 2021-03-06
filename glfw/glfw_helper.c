@@ -1,5 +1,8 @@
 
 #include "glfw_helper.h"
+#include "../glsl.h"
+
+extern ShaderWithColor currentShader;
 
 void checkGLEW()
 {
@@ -46,13 +49,19 @@ void printOpenGLVersion()
 
 void destroyGLFWindow(MyWindow *pWindow)
 {
-    if (pWindow && pWindow->pglfWindow)
+    if(pWindow == 0) {
+        return;
+    }
+
+    if (pWindow->pglfWindow)
     {
         glfwDestroyWindow(pWindow->pglfWindow);
         pWindow->pglfWindow = 0;
         glfwTerminate();
     }
 }
+
+int called = 0;
 
 int openGLFWindow(MyWindow *pWindow, drawSceneFunc drawScene)
 {
@@ -78,6 +87,7 @@ int openGLFWindow(MyWindow *pWindow, drawSceneFunc drawScene)
     pWindow->pglfWindow = pglfWindow;
 
     glfwMakeContextCurrent(pglfWindow);
+    glfwSwapInterval(1);
 
     // We need a context to execute this, otherwise null is returned.
     printOpenGLVersion();
@@ -91,11 +101,7 @@ int openGLFWindow(MyWindow *pWindow, drawSceneFunc drawScene)
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     // some default thickness for lines
-    glLineWidth(3);
-
-    // set viewport
-    glfwGetFramebufferSize(pglfWindow, &pWindow->width, &pWindow->height);
-    glViewport(0, 0, pWindow->width, pWindow->height);
+    glLineWidth(3);   
 
     //register callbacks for keyboard and mouse
     if (pWindow->keyboardCallback)
@@ -113,9 +119,20 @@ int openGLFWindow(MyWindow *pWindow, drawSceneFunc drawScene)
         glfwSetMouseButtonCallback(pglfWindow, pWindow->mouseButtonCallback);
     }
 
+    if(!called) {
+        initShaderForPoints(&currentShader);
+        called++;
+    }
+
     while (!glfwWindowShouldClose(pglfWindow))
     {
+        // Get current dimensions of the framebuffer
+        glfwGetFramebufferSize(pglfWindow, &pWindow->width, &pWindow->height);
+
+        // Set viewport here, 
+        // such that on window resize also the viewport gets will be resized
         glViewport(0, 0, pWindow->width, pWindow->height);
+
         // Clear contents and set background color
         glClearColor(pWindow->clearColors.red,
                      pWindow->clearColors.green,
@@ -126,7 +143,8 @@ int openGLFWindow(MyWindow *pWindow, drawSceneFunc drawScene)
 
         if (drawScene)
         {
-            drawScene();
+            //drawScene();
+            drawPoints();
         }
 
         // After drawing we switch the buffers(front, back)
