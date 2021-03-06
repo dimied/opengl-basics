@@ -28,6 +28,14 @@ void mouseButtonPressed(GLFWwindow *pWindow, int button, int action, int mods)
 
 ShaderWithColor currentShader;
 
+Vertex2D points[] = {
+    {{-1, 0}, {1, 0, 0, 1}},
+    {{0, 1}, {0, 1, 0, 1}},
+    {{1, 0}, {0, 0, 1, 1}},
+};
+
+unsigned int numberOfTriangles = 3;
+
 int main()
 {
     myWindow.width = 800;
@@ -44,6 +52,8 @@ int main()
     int id = SHADER_WITH_COLOR;
     currentShader.pszVertexShader = getShaderCode(id, VERTEX_SHADER);
     currentShader.pszFragmentShader = getShaderCode(id, FRAGMENT_SHADER);
+    currentShader.pVertexData = points;
+    currentShader.vertexArrayNumEntries = 3;
 
     int windowResult = openGLFWindow(&myWindow, &drawScene);
 

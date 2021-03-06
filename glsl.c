@@ -50,19 +50,7 @@ void shaderLinkCheck(GLuint ID)
     }
 }
 
-//ID of Vertex Attribute
-GLuint positionID;
-GLuint colorID;
-GLuint bufferID;
-GLuint vertexArrayID;
 
-Vertex2D points[] = {
-    {{-1, 0}, {1, 0, 0, 1}},
-    {{0, 1}, {0, 1, 0, 1}},
-    {{1, 0}, {0, 0, 1, 1}},
-};
-
-unsigned int numberOfTriangles = 3;
 
 void initShaderForPoints(ShaderWithColor *shaderProg)
 {
@@ -93,6 +81,11 @@ void initShaderForPoints(ShaderWithColor *shaderProg)
     //Use/execute the program
     glUseProgram(shaderID);
 
+    GLuint positionID;
+    GLuint colorID;
+    GLuint bufferID;
+    GLuint vertexArrayID;
+
     //Get locations of variables in the program
     positionID = glGetAttribLocation(shaderID, "position");
 
@@ -110,6 +103,8 @@ void initShaderForPoints(ShaderWithColor *shaderProg)
     GENVERTEXARRAYS(1, &vertexArrayID);
     BIND_VERTEX_ARRAY(vertexArrayID);
 
+    shaderProg->vertexArrayID = vertexArrayID;
+
     /*-----------------------------------------------------------------------------
      *  CREATE THE VERTEX BUFFER OBJECT
      *-----------------------------------------------------------------------------*/
@@ -119,8 +114,8 @@ void initShaderForPoints(ShaderWithColor *shaderProg)
     glBindBuffer(GL_ARRAY_BUFFER, bufferID);
     // Send data to GPU using buffer
     glBufferData(GL_ARRAY_BUFFER,
-                 numberOfTriangles * sizeof(Vertex2D),
-                 points, GL_STATIC_DRAW);
+                 shaderProg->vertexArrayNumEntries * sizeof(Vertex2D),
+                 shaderProg->pVertexData, GL_STATIC_DRAW);
 
     // Enable Position Attribute
     glEnableVertexAttribArray(positionID);
@@ -145,7 +140,7 @@ void drawPoints()
 {
     //Set program and bind vertex array
     glUseProgram(currentShader.shaderID);
-    BIND_VERTEX_ARRAY(vertexArrayID);
+    BIND_VERTEX_ARRAY(currentShader.vertexArrayID);
 
     //Draw Triangle(s)
     glDrawArrays(GL_TRIANGLES, 0, 3);

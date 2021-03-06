@@ -56,6 +56,10 @@ typedef struct
     char const *pszFragmentShader;
     int withColor;
 
+    GLuint vertexArrayID;
+    unsigned int vertexArrayNumEntries;
+    Vertex2D*pVertexData;
+
 } ShaderWithColor;
 
 enum ShaderCodeType
