@@ -5,8 +5,9 @@
 #include <stdio.h>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include "../scene_renderer.h"
 
-typedef void (*drawSceneFunc)();
+//typedef void (*drawSceneFunc)();
 
 typedef struct
 {
@@ -29,7 +30,7 @@ typedef struct
 
 int openGLFWindow(
     MyWindow *pWindow,
-    drawSceneFunc drawScene);
+    SceneRenderer* pRenderer);
 
 void destroyGLFWindow(MyWindow *pWindow);
 

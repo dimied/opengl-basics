@@ -2,8 +2,6 @@
 #include "glfw_helper.h"
 #include "../glsl.h"
 
-extern ShaderWithColor currentShader;
-
 void checkGLEW()
 {
     // To prevent errors with modern OpenGL
@@ -63,7 +61,7 @@ void destroyGLFWindow(MyWindow *pWindow)
 
 int called = 0;
 
-int openGLFWindow(MyWindow *pWindow, drawSceneFunc drawScene)
+int openGLFWindow(MyWindow *pWindow, SceneRenderer* pRenderer)
 {
     GLFWwindow *pglfWindow;
 
@@ -120,7 +118,8 @@ int openGLFWindow(MyWindow *pWindow, drawSceneFunc drawScene)
     }
 
     if(!called) {
-        initShaderForPoints(&currentShader);
+        pRenderer->init();
+        //initShaderForPoints(&currentShader);
         called++;
     }
 
@@ -141,10 +140,11 @@ int openGLFWindow(MyWindow *pWindow, drawSceneFunc drawScene)
         // also clear the depth buffer
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        if (drawScene)
+        if (pRenderer)
         {
+            pRenderer->draw();
             //drawScene();
-            drawPoints();
+            //drawPoints();
         }
 
         // After drawing we switch the buffers(front, back)

@@ -6,6 +6,7 @@
 #include "glfw/glfw_helper.h"
 #include "opengl3.h"
 #include "glsl.h"
+#include "shader_scene_renderer.hpp"
 
 char *pszWindowTitle = "Example";
 MyWindow myWindow;
@@ -26,8 +27,6 @@ void mouseButtonPressed(GLFWwindow *pWindow, int button, int action, int mods)
     printf("Button pressed\n");
 }
 
-ShaderWithColor currentShader;
-
 Vertex2D points[] = {
     {{-1, 0}, {1, 0, 0, 1}},
     {{0, 1}, {0, 1, 0, 1}},
@@ -35,6 +34,8 @@ Vertex2D points[] = {
 };
 
 unsigned int numberOfTriangles = 3;
+
+
 
 int main()
 {
@@ -48,14 +49,18 @@ int main()
     myWindow.cursorPosCallback = mouseMove;
     myWindow.mouseButtonCallback = mouseButtonPressed;
 
-    currentShader.withColor = 1;
+    ShaderSceneRenderer * pRenderer = new ShaderSceneRenderer();
     int id = SHADER_WITH_COLOR;
-    currentShader.pszVertexShader = getShaderCode(id, VERTEX_SHADER);
-    currentShader.pszFragmentShader = getShaderCode(id, FRAGMENT_SHADER);
-    currentShader.pVertexData = points;
-    currentShader.vertexArrayNumEntries = 3;
+    
+    pRenderer->withColor = 1;
+    pRenderer->pszVertexShader  = getShaderCode(id, VERTEX_SHADER);
+    pRenderer->pszFragmentShader = getShaderCode(id, FRAGMENT_SHADER);
+    pRenderer->pVertexData = points;
+    pRenderer->vertexArrayNumEntries = 3;
 
-    int windowResult = openGLFWindow(&myWindow, &drawScene);
+    printf("Hallo\n");
+
+    int windowResult = openGLFWindow(&myWindow, pRenderer);
 
     destroyGLFWindow(&myWindow);
 

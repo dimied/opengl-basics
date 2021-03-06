@@ -2,7 +2,7 @@
 #include <GL/gl.h>
 #include <stdio.h>
 
-char *pszGlErrors[] = {
+char const *pszGlErrors[] = {
     "Unacceptable value for an enumeration type",
     "Invalid numeric argument specified.",
     "Invalid operation (in the current state).",
@@ -24,7 +24,7 @@ void printErrors(char *pszPrefix)
     GLenum err = glGetError();
 
     unsigned int errorOffset = -1;
-#if (HAS_CONSECUTIVE_ERROR_ENUMS != 0)
+#if (HAS_CONSECUTIVE_ERROR_ENUMS == 0)
     if (err >= GL_INVALID_ENUM && err <= GL_INVALID_FRAMEBUFFER_OPERATION)
     {
         errorOffset = err - GL_INVALID_ENUM;
@@ -68,7 +68,7 @@ void printErrors(char *pszPrefix)
 
     if (errorOffset >= 0)
     {
-        char *pszError = pszGlErrors[errorOffset];
+        const char *pszError = pszGlErrors[errorOffset];
 
         if (pszPrefix)
         {

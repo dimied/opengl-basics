@@ -14,7 +14,7 @@ SHADER_FILES = glsl.c gl_errors.c gl_shaders.c
 all: clean doall # doopt
 
 doall:
-	gcc -Os -o example main.c glfw/glfw_helper.c opengl3.c ${SHADER_FILES}  -lglfw3 -ldl -lm -pthread -lGLEW -lGLU -lGL -lrt -lXrandr -lXxf86vm -lXi -lXinerama -lX11
+	g++ -I./ -Os main.cpp glfw/glfw_helper.c opengl3.c ${SHADER_FILES}  -lglfw3 -ldl -lm -pthread -lGLEW -lGLU -lGL -lrt -lXrandr -lXxf86vm -lXi -lXinerama -lX11 -o example
 
 clean:
 	echo "hallo"

@@ -49,19 +49,6 @@ typedef struct
     vec4 color;
 } Vertex2D;
 
-typedef struct
-{
-    GLuint shaderID;
-    char const *pszVertexShader;
-    char const *pszFragmentShader;
-    int withColor;
-
-    GLuint vertexArrayID;
-    unsigned int vertexArrayNumEntries;
-    Vertex2D*pVertexData;
-
-} ShaderWithColor;
-
 enum ShaderCodeType
 {
     VERTEX_SHADER,
@@ -71,14 +58,11 @@ enum ShaderCodeType
 enum ExampleShaders
 {
     SIMPLE_SHADER,
-    SHADER_WITH_COLOR
+    SHADER_WITH_COLOR,
+    SHADER_WITH_MATRICES
 };
 
 const char *getShaderCode(int id, int type);
-
-void initShaderForPoints(ShaderWithColor *shaderProg);
-
-void drawPoints();
 
 void printErrors(char *pszPrefix);
 
