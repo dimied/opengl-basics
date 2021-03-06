@@ -35,8 +35,6 @@ Vertex2D points[] = {
 
 unsigned int numberOfTriangles = 3;
 
-
-
 int main()
 {
     myWindow.width = 800;
@@ -50,11 +48,10 @@ int main()
     myWindow.mouseButtonCallback = mouseButtonPressed;
 
     ShaderSceneRenderer * pRenderer = new ShaderSceneRenderer();
-    int id = SHADER_WITH_COLOR;
     
-    pRenderer->withColor = 1;
-    pRenderer->pszVertexShader  = getShaderCode(id, VERTEX_SHADER);
-    pRenderer->pszFragmentShader = getShaderCode(id, FRAGMENT_SHADER);
+    pRenderer->pWindow = &myWindow;
+    
+    pRenderer->shaderType = SHADER_WITH_MATRICES;//SHADER_WITH_COLOR;// SHADER_WITH_MATRICES;
     pRenderer->pVertexData = points;
     pRenderer->vertexArrayNumEntries = 3;
 

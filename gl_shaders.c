@@ -51,13 +51,14 @@ const char *vertexShaderAllMatrices = GLSL(
 
     varying vec4 dstColor;
 
+    // Matrices for transformations
     uniform mat4 model;
-    uniform mat4 view; //<-- 4x4 Transformation Matrices
+    uniform mat4 view;
     uniform mat4 projection;
 
     void main() {
         dstColor = color;
-        gl_Position = projection * view * model * position; //<-- Apply transformation
+        gl_Position = projection * view * model * position;
     }
 
 );
@@ -77,11 +78,17 @@ const char *getShaderCode(int id, int type)
     switch (id)
     {
     case SIMPLE_SHADER:
-        return type == VERTEX_SHADER ? vertexShaderCode : fragmentShaderCode;
+        return type == VERTEX_SHADER
+                   ? vertexShaderCode
+                   : fragmentShaderCode;
     case SHADER_WITH_COLOR:
-        return type == VERTEX_SHADER ? vertexShaderWithColor : fragmentShaderWithColor;
+        return type == VERTEX_SHADER
+                   ? vertexShaderWithColor
+                   : fragmentShaderWithColor;
     case SHADER_WITH_MATRICES:
-        return type == VERTEX_SHADER ? vertexShaderAllMatrices : fragmentShaderAllMatrices;
+        return type == VERTEX_SHADER
+                   ? vertexShaderAllMatrices
+                   : fragmentShaderAllMatrices;
     default:
         break;
     }
