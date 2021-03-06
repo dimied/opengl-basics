@@ -13,7 +13,7 @@
 all: clean doall # doopt
 
 doall:
-	gcc -Os main.c -o example -lglfw3 -ldl -lm -pthread -lGLU -lGL -lrt -lXrandr -lXxf86vm -lXi -lXinerama -lX11
+	gcc -Os -o example main.c glfw/glfw_helper.c -lglfw3 -ldl -lm -pthread -lGLU -lGL -lrt -lXrandr -lXxf86vm -lXi -lXinerama -lX11
 
 clean:
 	echo "hallo"
