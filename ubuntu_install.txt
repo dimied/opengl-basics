@@ -7,4 +7,6 @@
 # cmake .
 # libxrandr libxinerama development files might be missing
 # Ubuntu: sudo apt install libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev
+# make
+# make install
 sudo apt-get install libgl1-mesa-dev xorg-dev

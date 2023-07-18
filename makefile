@@ -1,6 +1,4 @@
 
-# make
-# sudo make install
 SHADER_FILES = glsl.c gl_errors.c gl_shaders.c
 
 all: clean doall # doopt
