@@ -6,7 +6,7 @@ Code might be "overcommented" for easier understanding.
 
 Requires GLEW.
 
-```
+```cpp
 /**
  * 
  * OpenGL Pipeline
@@ -41,3 +41,17 @@ Requires GLEW.
 
 - Projection matrix
 - Transforms eye space coordinates to clip space (i.e. screen area)
+
+GLEW:
+- interface for OpenGL1.1 and above
+- can check/load OpenGL extensions
+
+GLFW:
+- allows support for multiple windows
+- for window creation and management
+- can handle input devices (mouse, keyboard, joystick, gamepad)
+
+SDL:
+- can do more
+- allows access to audio, fs, 
+

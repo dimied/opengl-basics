@@ -1,6 +1,7 @@
 
-#include "glsl.h"
 #include <stdio.h>
+
+#include "glsl.h"
 #include "glsl_macros.h"
 
 /**
@@ -22,28 +23,30 @@ void shaderCompilerCheck(GLuint id)
 
 /**
  * Checks shader link errors
+ * @param id
  */
-void shaderLinkCheck(GLuint ID)
+void shaderLinkCheck(GLuint id)
 {
     GLint linkStatus, validateStatus;
-    glGetProgramiv(ID, GL_LINK_STATUS, &linkStatus);
+    GLchar messageData[256];
+
+    glGetProgramiv(id, GL_LINK_STATUS, &linkStatus);
 
     if (linkStatus == GL_FALSE)
     {
+        glGetProgramInfoLog(id, sizeof(messageData), 0, &messageData[0]);
         printf("Failed to link shader\n");
-        GLchar messageData[256];
-        glGetProgramInfoLog(ID, sizeof(messageData), 0, &messageData[0]);
         printf("%s\n", messageData);
     }
 
-    glValidateProgram(ID);
-    glGetProgramiv(ID, GL_VALIDATE_STATUS, &validateStatus);
+    glValidateProgram(id);
+    
+    glGetProgramiv(id, GL_VALIDATE_STATUS, &validateStatus);
 
     if (linkStatus == GL_FALSE)
     {
+        glGetProgramInfoLog(id, sizeof(messageData), 0, &messageData[0]);
         printf("Failed to validate shader\n");
-        GLchar messageData[256];
-        glGetProgramInfoLog(ID, sizeof(messageData), 0, &messageData[0]);
         printf("%s\n", messageData);
     }
 }

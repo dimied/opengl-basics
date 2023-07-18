@@ -8,7 +8,7 @@
 #include "glsl.h"
 #include "shader_scene_renderer.hpp"
 
-char *pszWindowTitle = "Example";
+char *pszWindowTitle = (char*)"Example";
 MyWindow myWindow;
 
 void drawScene()
@@ -51,7 +51,9 @@ int main()
     
     pRenderer->pWindow = &myWindow;
     
-    pRenderer->shaderType = SHADER_WITH_MATRICES;//SHADER_WITH_COLOR;// SHADER_WITH_MATRICES;
+    //SHADER_WITH_COLOR;// SHADER_WITH_MATRICES;
+    pRenderer->shaderType = SHADER_WITH_MATRICES;
+    
     pRenderer->pVertexData = points;
     pRenderer->vertexArrayNumEntries = 3;
 

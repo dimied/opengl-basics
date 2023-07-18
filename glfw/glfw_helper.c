@@ -1,12 +1,15 @@
 
 #include "glfw_helper.h"
 #include "../glsl.h"
+#include "../scene_renderer.h"
 
 void checkGLEW()
 {
     // To prevent errors with modern OpenGL
-    glewExperimental = 1;
+    glewExperimental = GL_TRUE; //1
+
     GLenum glewError = glewInit();
+    
     if (glewError != GLEW_OK)
     {
         printf("glew init error\n%s\n", glewGetErrorString(glewError));
@@ -98,6 +101,7 @@ int openGLFWindow(MyWindow *pWindow, SceneRenderer* pRenderer)
     // Blending, especially for transparent objects
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     // some default thickness for lines
     glLineWidth(3);   
 
@@ -143,12 +147,11 @@ int openGLFWindow(MyWindow *pWindow, SceneRenderer* pRenderer)
         if (pRenderer)
         {
             pRenderer->draw();
-            //drawScene();
-            //drawPoints();
         }
 
         // After drawing we switch the buffers(front, back)
         glfwSwapBuffers(pglfWindow);
+        
         // Listening for Window events
         glfwPollEvents();
     }

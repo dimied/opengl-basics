@@ -1,9 +1,11 @@
 #ifndef __SCENE_RENDERER_WITH_SHADERS__
 #define __SCENE_RENDERER_WITH_SHADERS__
 
-#include <GL/glew.h>
 #include <stdio.h>
 #include <math.h>
+#include <iostream>
+#include <GL/glew.h>
+//
 #include "scene_renderer.h"
 #include "glsl.h"
 #include "glsl_macros.h"
@@ -12,7 +14,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "glfw/gl_window.h"
-#include <iostream>
+
 
 // function to display 4x4 matrix
 
@@ -88,10 +90,10 @@ public:
 
         if (shaderType == SHADER_WITH_MATRICES)
         {
+            printf("Use with matrix values... \n");
             modelID = glGetUniformLocation(shaderID, "model");
             viewID = glGetUniformLocation(shaderID, "view");
             projectionID = glGetUniformLocation(shaderID, "projection");
-            printf("Matrix values... \n");
         }
 
         /*-----------------------------------------------------------------------------

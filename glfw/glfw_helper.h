@@ -4,17 +4,17 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <GL/glew.h>
+//for Windows may be useful
+//#include <GL/wglew.h>
 #include <GLFW/glfw3.h>
+//
 #include "gl_window.h"
 #include "../scene_renderer.h"
 
-//typedef void (*drawSceneFunc)();
-
-
-
 int openGLFWindow(
     MyWindow *pWindow,
-    SceneRenderer* pRenderer);
+    SceneRenderer* pRenderer
+);
 
 void destroyGLFWindow(MyWindow *pWindow);
 

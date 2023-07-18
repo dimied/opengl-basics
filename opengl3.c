@@ -30,7 +30,7 @@ void drawRotatingTriangle()
 
     int width = myWindow.width;
     int height = myWindow.height;
-    
+
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(-(float)width / height, (float)width / height, -1.f, 1.f, 1.f, -1.f);
@@ -38,16 +38,15 @@ void drawRotatingTriangle()
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    // Using "fixed function pipeline"
     for (int i = 0; i < 10; ++i)
     {
         float t = (float)i / 10;
         glPushMatrix();
 
         // scale, then rotate, then Translate
-        //glTranslatef(t * sin(counter), 0, 0);
+        // glTranslatef(t * sin(counter), 0, 0);
         glRotatef(360 * t * counter, 0, 0, 1);
-        //glScalef(1 - t, 1 - t, 1 - t);
+        // glScalef(1 - t, 1 - t, 1 - t);
 
         drawSingleTriangle();
 

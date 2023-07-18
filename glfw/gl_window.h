@@ -18,7 +18,7 @@ typedef struct
     GLFWkeyfun keyboardCallback;
     GLFWcursorposfun cursorPosCallback;
     GLFWmousebuttonfun mouseButtonCallback;
-    // private
+    
     GLFWwindow *pglfWindow;
 } MyWindow;
 

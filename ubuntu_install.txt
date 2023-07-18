@@ -1,0 +1,10 @@
+# On Ubuntu you can do the following to install GLEW:
+# sudo apt-get install libglew-dev
+#
+# To install GLFW
+# git clone https://github.com/glfw/glfw.git
+# cd glfw
+# cmake .
+# libxrandr libxinerama development files might be missing
+# Ubuntu: sudo apt install libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev
+sudo apt-get install libgl1-mesa-dev xorg-dev
