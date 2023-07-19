@@ -55,6 +55,7 @@ public:
     pszFragmentShader = getShaderCode(shaderType, FRAGMENT_SHADER);
 
     // Load shader source code
+    // last parameter is code length, NULL means 0-teminated
     glShaderSource(vID, 1, &pszVertexShader, NULL);
     glShaderSource(fID, 1, &pszFragmentShader, NULL);
 
@@ -199,10 +200,9 @@ public:
     glm::mat4 view =
         glm::lookAt(glm::vec3(0, 0, 2), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 
+    float fovy = M_PI / 3.0f;
     float windowRatio = currentWindowRatio();
     // printf("Ratio: %.2lf\n", windowRatio);
-
-    float fovy = M_PI / 3.0f;
     // Projection matrix
     glm::mat4 proj = glm::perspective(fovy, windowRatio, 0.1f, -10.0f);
 
