@@ -8,12 +8,14 @@ typedef struct
     int width;
     int height;
     char *pszWindowTitle;
-    struct
-    {
+    union {
+        struct {
         float red;
         float green;
         float blue;
         float alpha;
+        } rgba;
+        float values[4];
     } clearColors;
     GLFWkeyfun keyboardCallback;
     GLFWcursorposfun cursorPosCallback;

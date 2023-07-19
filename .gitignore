@@ -1,6 +1,9 @@
 # Prerequisites
 *.d
 
+# project files
+.vscode
+
 # Compiled Object files
 *.slo
 *.lo
@@ -30,3 +33,4 @@
 *.exe
 *.out
 *.app
+example

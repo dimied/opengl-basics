@@ -13,7 +13,6 @@ MyWindow myWindow;
 
 void drawScene()
 {
-    // drawSingleTriangle();
     drawRotatingTriangle();
 }
 
@@ -40,10 +39,10 @@ int main()
     myWindow.width = 800;
     myWindow.height = 600;
     myWindow.pszWindowTitle = pszWindowTitle;
-    myWindow.clearColors.red = 0.4;
-    myWindow.clearColors.green = 0.4;
-    myWindow.clearColors.blue = 0.4;
-    myWindow.clearColors.alpha = 1;
+    myWindow.clearColors.rgba.red = 0.4;
+    myWindow.clearColors.rgba.green = 0.4;
+    myWindow.clearColors.rgba.blue = 0.4;
+    myWindow.clearColors.rgba.alpha = 1;
     myWindow.cursorPosCallback = mouseMove;
     myWindow.mouseButtonCallback = mouseButtonPressed;
 
@@ -57,7 +56,7 @@ int main()
     pRenderer->pVertexData = points;
     pRenderer->vertexArrayNumEntries = 3;
 
-    printf("Hallo\n");
+    printf("Starting ...\n");
 
     int windowResult = openGLFWindow(&myWindow, pRenderer);
 

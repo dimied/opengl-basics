@@ -4,6 +4,7 @@
 #include "glsl.h"
 #include "glsl_macros.h"
 
+
 /**
  * Checks compilation errors
  */
@@ -40,7 +41,7 @@ void shaderLinkCheck(GLuint id)
     }
 
     glValidateProgram(id);
-    
+
     glGetProgramiv(id, GL_VALIDATE_STATUS, &validateStatus);
 
     if (linkStatus == GL_FALSE)
