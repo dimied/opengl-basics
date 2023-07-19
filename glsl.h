@@ -2,6 +2,7 @@
 #define __MY_GLSL_CODE__
 
 #include <GL/glew.h>
+#include "gl_errors.h"
 
 /**
   * GLSL
@@ -61,9 +62,5 @@ enum ExampleShaders
     SHADER_WITH_COLOR,
     SHADER_WITH_MATRICES
 };
-
-const char *getShaderCode(int id, int type);
-
-void printErrors(char *pszPrefix);
 
 #endif

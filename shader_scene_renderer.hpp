@@ -17,8 +17,9 @@
 #include "glsl_macros.h"
 #include "glsl_util.h"
 #include "scene_renderer.h"
+#include "gl_shaders.h"
 
-#define ERR_MSG_LEN 1024
+#define ERR_MSG_LEN 512
 // function to display 4x4 matrix
 
 class ShaderSceneRenderer : public SceneRenderer {
@@ -104,8 +105,12 @@ public:
       // Use/execute the program
       glUseProgram(shaderID);
       printErrors(0);
-    }
 
+      bindValues();
+    }
+  }
+
+  void bindValues() {
     GLuint positionID;
     GLuint colorID;
     GLuint bufferID;

@@ -48,7 +48,9 @@ GLenum checkGLEW()
 void printOpenGLVersion()
 {
     const GLubyte *pVersion = glGetString(GL_VERSION);
-    printf("OpenGL version: %s\n", pVersion);
+    if(pVersion != 0) {
+        printf("OpenGL version: %s\n", pVersion);
+    }
 }
 
 void destroyGLFWindow(MyWindow *pWindow)
@@ -126,6 +128,7 @@ int openGLFWindow(MyWindow *pWindow, SceneRenderer *pRenderer)
     {
         pWindow->pglfWindow = NULL;
         glfwDestroyWindow(pglfWindow);
+        pWindow->pglfWindow = 0;
         glfwTerminate();
         return 1;
     }
@@ -142,6 +145,7 @@ int openGLFWindow(MyWindow *pWindow, SceneRenderer *pRenderer)
     // some default thickness for lines
     glLineWidth(3);
 
+    
     // register callbacks for keyboard and mouse
     if (pWindow->keyboardCallback)
     {
@@ -190,9 +194,7 @@ int openGLFWindow(MyWindow *pWindow, SceneRenderer *pRenderer)
         if (pRenderer)
         {
             pRenderer->draw();
-        }
-
-        
+        }        
 
         // Switch the buffers(front, back)
         glfwSwapBuffers(pglfWindow);

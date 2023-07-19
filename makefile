@@ -14,5 +14,12 @@ doall:
 	-lglfw3 -ldl -lm -pthread -lGLEW -lGLU -lGL -lrt -lXrandr -lXxf86vm \
 	-lXi -lXinerama -lX11 -o example
 
+doall_debug:
+	g++ -I./ -g3 main.cpp glm_util.cpp glfw/glfw_helper.c opengl3.c \
+	${GLSL_FILES} ${SHADER_FILES} \
+	${EXAMPLES_FILES} \
+	-lglfw3 -ldl -lm -pthread -lGLEW -lGLU -lGL -lrt -lXrandr -lXxf86vm \
+	-lXi -lXinerama -lX11 -o example
+
 clean:
-	echo "hallo"
+	rm ./example

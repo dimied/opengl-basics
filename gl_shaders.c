@@ -1,6 +1,7 @@
 #include "glsl.h"
 
 #include "glsl_macros.h"
+#include "gl_shaders.h"
 
 const char *vertexShaderCode = GLSL(
     120,
