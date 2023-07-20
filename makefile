@@ -5,6 +5,8 @@ SHADER_FILES = gl_errors.c gl_shaders.c
 
 EXAMPLES_FILES = examples.c
 
+#LDFLAGS='-ldl'
+
 all: clean doall # doopt
 
 doall:
@@ -13,6 +15,7 @@ doall:
 	${EXAMPLES_FILES} \
 	-lglfw3 -ldl -lm -pthread -lGLEW -lGLU -lGL -lrt -lXrandr -lXxf86vm \
 	-lXi -lXinerama -lX11 -o example
+
 
 doall_debug:
 	g++ -I./ -g3 main.cpp glm_util.cpp glfw/glfw_helper.c opengl3.c \
