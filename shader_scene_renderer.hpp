@@ -200,11 +200,13 @@ public:
     glm::mat4 view =
         glm::lookAt(glm::vec3(0, 0, 2), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 
-    float fovy = M_PI / 3.0f;
+    float fieldOfView = M_PI / 3.0f; //60°
     float windowRatio = currentWindowRatio();
     // printf("Ratio: %.2lf\n", windowRatio);
+    float zFar = -10.0f;  //- because pointing away from viewer
+    
     // Projection matrix
-    glm::mat4 proj = glm::perspective(fovy, windowRatio, 0.1f, -10.0f);
+    glm::mat4 proj = glm::perspective(fieldOfView, windowRatio, 0.1f, zFar);
 
     // Send data for matrices
     glUniformMatrix4fv(viewID, 1, GL_FALSE, glm::value_ptr(view));
@@ -212,15 +214,16 @@ public:
 
     // Important! Otherwise we get a matrix with zeros
     glm::mat4 ident = glm::mat4(1.0f);
-    int num = 300;
+    int num = 100;
 
     for (int i = 0; i < num; i++) {
       glm::mat4 scale = glm::scale(ident, glm::vec3(1.0f - (float)i / num));
       float angle = time * M_PI * i / num;
+      //around z-axis (0,0,1)
       glm::mat4 rotate = glm::rotate(ident, angle, glm::vec3(0, 0, 1));
 
       glm::mat4 translate =
-          glm::translate(ident, glm::vec3(sin(time), 0, (float)i / num));
+          glm::translate(ident, glm::vec3(sin(time), 0.0f, (float)i / num));
 
       // Model Transformation matrix
       glm::mat4 model = translate * rotate * scale;

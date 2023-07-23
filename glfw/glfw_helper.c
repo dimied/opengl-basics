@@ -144,7 +144,6 @@ int openGLFWindow(MyWindow *pWindow, SceneRenderer *pRenderer)
 
     // some default thickness for lines
     glLineWidth(3);
-
     
     // register callbacks for keyboard and mouse
     if (pWindow->keyboardCallback)

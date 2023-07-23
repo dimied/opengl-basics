@@ -83,6 +83,108 @@ void main() {
   - color blending (i.e. mixing colors for overlapping fragments)
   - output into fragment buffer
 - Buffer swap
+- Uniform variables
 ```c
+#version 330
+attribute vec4 position;
+attribute vec4 color;
 
+varying vec4 dstColor;
+
+// Matrices for transformations
+uniform mat4 model;
+uniform mat4 view;
+uniform mat4 projection;
+
+void main() {
+    dstColor = color;
+    gl_Position = projection * view * model * position;
+}
+```
+
+## Textures
+- many image libraries available:
+  - SOIL (Simple OpenGL Image Library), stb_image
+- primarily for image data
+- 1D, 2D, 3D textures possible
+- texels : points in textures
+- texels defined in range between 0 and 1
+  - (0,0) bottom-left, (1,1) top-right
+- interpolation is used for texel data
+- samplers are used in shaders to access texture data
+- Mipmaps can be used for different levels of detail (glGenerateMipmap(...))
+- types: GL_TEXTURE_1D, GL_TEXTURE_2D, GL_TEXTURE_3D, GL_TEXTURE_CUBE_MAP
+- creating/binding texture objects
+```c
+//binding
+glGenTextures(1, &textureObject);
+glBindTexture(GL_TEXTURE_2D, textureObject);
+```
+- binding data
+```c
+//binding
+glTexImage2D(
+  GL_TEXTURE_2D, //target
+  0, // Mipmap level (usually 0)    
+  GL_RGB, // Format of data used by OpenGL for drawing
+  width, height, //dimensions
+  0, //for border, usually 0
+  GL_RGB, // format of loaded data
+  GL_UNSIGNED_BYTE, // type of loaded values
+  pTextureData  //data to load
+);
+```
+- Filters: How to choose texel values
+  - 2 choices:
+    - NEAREST: Nearest texel value, creates pixelated effect
+    - LINEAR: texel values are interpolated/blended
+```c
+// for the case when texture is scaled down, i.e. further away from viewer
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+// for the case when texture is scaled up, i.e. closer to viewer
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_FILTER, GL_LINEAR);
+```
+- Wrap: Defines how texture coordinates outside of [0,1] are shown
+  - Repeat texture (GL_REPEAT)
+  - repeat and mirror texture (GL_MIRRORED_REPEAT)
+  - repeat only texture edge/border values (GL_CLAMP_TO_EDGE)
+  - use a colored border (GL_CLAMP_TO_BORDER)
+```c
+// for s-axis (x axis)
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+// for t-axis (y axis)
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+```
+- stb_image: single file to include
+```c
+//required
+#define STB_IMAGE_IMPLEMENTATION
+// image flip might be required
+stbi_set_flip_vertically(true);
+//load path
+unsigned char *pData = stbi_load("path.jpg", pWidth, pHeight, pBitDepth,0);
+```
+- texture samplers
+  - texture units are used by samplers to access texture data
+  - in shaders sampler2D type is used with texture function
+```c
+//shader code:
+
+//textureSampler: sampler2D object
+//TexCoord : (interpolated)  texture coordinates in fragment shader
+texture(textureSampler, TexCoord);
+```
+- set sampler2D variables for texture unit to access
+```c
+glUniform1i(uniformTextureSampler, textureUnitNumber);
+```
+- texture units: usually many
+  - named by GL_TEXTUREX
+```c
+glActiveTexture(GL_TEXTURE0);
+glBindTexture(GL_TEXTURE_2D textureId);
+```
+```c
+```
+```c
 ```

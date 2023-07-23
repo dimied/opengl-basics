@@ -1,29 +1,26 @@
 
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #define GLEW_STATIC
-#include <GL/glew.h>
 #include "glfw/glfw_helper.h"
-#include "opengl3.h"
 #include "glsl.h"
+#include "opengl3.h"
 #include "shader_scene_renderer.hpp"
+#include <GL/glew.h>
 
-char *pszWindowTitle = (char*)"Example";
+#include "gl_basics.h"
+
+const char *pszWindowTitle = "Example";
 MyWindow myWindow;
 
-void drawScene()
-{
-    drawRotatingTriangle();
+void drawScene() { drawRotatingTriangle(); }
+
+void mouseMove(GLFWwindow *pWindow, double x, double y) {
+  // printf("X=%.0lf, Y=%.0lf\n", x, y);
 }
 
-void mouseMove(GLFWwindow *pWindow, double x, double y)
-{
-    //printf("X=%.0lf, Y=%.0lf\n", x, y);
-}
-
-void mouseButtonPressed(GLFWwindow *pWindow, int button, int action, int mods)
-{
-    printf("Button pressed\n");
+void mouseButtonPressed(GLFWwindow *pWindow, int button, int action, int mods) {
+  printf("Button pressed\n");
 }
 
 Vertex2D points[] = {
@@ -34,33 +31,32 @@ Vertex2D points[] = {
 
 unsigned int numberOfTriangles = 3;
 
-int main()
-{
-    myWindow.width = 800;
-    myWindow.height = 600;
-    myWindow.pszWindowTitle = pszWindowTitle;
-    myWindow.clearColors.rgba.red = 0.4;
-    myWindow.clearColors.rgba.green = 0.4;
-    myWindow.clearColors.rgba.blue = 0.4;
-    myWindow.clearColors.rgba.alpha = 1;
-    myWindow.cursorPosCallback = mouseMove;
-    myWindow.mouseButtonCallback = mouseButtonPressed;
+int main() {
+  myWindow.width = 800;
+  myWindow.height = 600;
+  myWindow.pszWindowTitle = (char *)pszWindowTitle;
+  myWindow.clearColors.rgba.red = 0.4;
+  myWindow.clearColors.rgba.green = 0.4;
+  myWindow.clearColors.rgba.blue = 0.4;
+  myWindow.clearColors.rgba.alpha = 1;
+  myWindow.cursorPosCallback = mouseMove;
+  myWindow.mouseButtonCallback = mouseButtonPressed;
 
-    ShaderSceneRenderer * pRenderer = new ShaderSceneRenderer();
-    
-    pRenderer->pWindow = &myWindow;
-    
-    //SHADER_WITH_COLOR;// SHADER_WITH_MATRICES;
-    pRenderer->shaderType = SHADER_WITH_MATRICES;
-    
-    pRenderer->pVertexData = points;
-    pRenderer->vertexArrayNumEntries = 3;
+  ShaderSceneRenderer *pRenderer = new ShaderSceneRenderer();
 
-    printf("Starting ...\n");
+  pRenderer->pWindow = &myWindow;
 
-    int windowResult = openGLFWindow(&myWindow, pRenderer);
+  // SHADER_WITH_COLOR;// SHADER_WITH_MATRICES;
+  pRenderer->shaderType = SHADER_WITH_MATRICES;
 
-    destroyGLFWindow(&myWindow);
+  pRenderer->pVertexData = points;
+  pRenderer->vertexArrayNumEntries = 3;
 
-    return windowResult;
+  printf("Starting ...\n");
+
+  int windowResult = openGLFWindow(&myWindow, pRenderer);
+
+  destroyGLFWindow(&myWindow);
+
+  return windowResult;
 }

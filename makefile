@@ -1,5 +1,5 @@
 
-GLSL_FILES = glsl.c glsl_util.c
+GLSL_FILES = glsl.c glsl_util.c gl_basics.c
 
 SHADER_FILES = gl_errors.c gl_shaders.c
 
