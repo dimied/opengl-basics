@@ -11,13 +11,14 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 //
+#include "gl_shaders.h"
 #include "glfw/gl_window.h"
 #include "glm_util.h"
 #include "glsl.h"
 #include "glsl_macros.h"
 #include "glsl_util.h"
+#include "math_util.h"
 #include "scene_renderer.h"
-#include "gl_shaders.h"
 
 #define ERR_MSG_LEN 512
 // function to display 4x4 matrix
@@ -145,17 +146,16 @@ public:
     glBufferData(GL_ARRAY_BUFFER, vertexArrayNumEntries * sizeof(Vertex2D),
                  pVertexData, GL_STATIC_DRAW);
 
-    // Enable Position Attribute
-    glEnableVertexAttribArray(positionID);
-
-    glEnableVertexAttribArray(colorID);
     // Specify how to handle data in the buffer
     //                    attribute  num   type     normalize   stride   offset
     glVertexAttribPointer(positionID, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2D),
                           0);
+    // Enable Position Attribute
+    glEnableVertexAttribArray(positionID);
 
     glVertexAttribPointer(colorID, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex2D),
                           (void *)sizeof(vec2));
+    glEnableVertexAttribArray(colorID);
 
     // Unbind both: vertex array object and vertex buffer object
     BIND_VERTEX_ARRAY(0);
@@ -196,15 +196,15 @@ public:
     glUseProgram(shaderID);
     BIND_VERTEX_ARRAY(vertexArrayID);
 
-    // View Matrix is defined by: eye position, target, Up Vector
-    glm::mat4 view =
-        glm::lookAt(glm::vec3(0, 0, 2), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+    if (hasView == 0) {
+      setView();
+    }
 
-    float fieldOfView = M_PI / 3.0f; //60°
+    float fieldOfView = M_PI / 3.0f; // 60°
     float windowRatio = currentWindowRatio();
     // printf("Ratio: %.2lf\n", windowRatio);
-    float zFar = -10.0f;  //- because pointing away from viewer
-    
+    float zFar = -10.0f; //- because pointing away from viewer
+
     // Projection matrix
     glm::mat4 proj = glm::perspective(fieldOfView, windowRatio, 0.1f, zFar);
 
@@ -219,7 +219,7 @@ public:
     for (int i = 0; i < num; i++) {
       glm::mat4 scale = glm::scale(ident, glm::vec3(1.0f - (float)i / num));
       float angle = time * M_PI * i / num;
-      //around z-axis (0,0,1)
+      // around z-axis (0,0,1)
       glm::mat4 rotate = glm::rotate(ident, angle, glm::vec3(0, 0, 1));
 
       glm::mat4 translate =
@@ -239,6 +239,37 @@ public:
   void drawSingleTriangle() {
     // Draw Triangle(s)
     glDrawArrays(GL_TRIANGLES, 0, 3);
+  }
+
+  int hasView = 0;
+  glm::mat4 view;
+  void setView() {
+    float viewer[] = {0, 0, 2};
+    float viewAt[] = {0, 0, 0};
+    float upVec[] = {0, 1, 0};
+    float viewRes[16];
+    // View Matrix is defined by: eye position, target, Up Vector
+    view =
+        glm::lookAt(glm::vec3(0, 0, 2), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+    float *viewVals = (float *)glm::value_ptr(view);
+
+    lookAtRightHandCM(viewer, viewAt, upVec, viewRes);
+
+    printf("----\n");
+    for (int i = 0; i < 4; i++) {
+      printf(" %f | %f | %f | %f |\n", viewVals[0], viewVals[4], viewVals[8],
+             viewVals[12]);
+      ++viewVals;
+    }
+    printf("----\n");
+    viewVals = &viewRes[0];
+    for (int i = 0; i < 4; i++) {
+      printf(" %f | %f | %f | %f |\n", viewVals[0], viewVals[4], viewVals[8],
+             viewVals[12]);
+      ++viewVals;
+    }
+    printf("----\n");
+    ++hasView;
   }
 };
 

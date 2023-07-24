@@ -142,7 +142,7 @@ glTexImage2D(
 // for the case when texture is scaled down, i.e. further away from viewer
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 // for the case when texture is scaled up, i.e. closer to viewer
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_FILTER, GL_LINEAR);
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 ```
 - Wrap: Defines how texture coordinates outside of [0,1] are shown
   - Repeat texture (GL_REPEAT)
@@ -169,7 +169,7 @@ unsigned char *pData = stbi_load("path.jpg", pWidth, pHeight, pBitDepth,0);
   - in shaders sampler2D type is used with texture function
 ```c
 //shader code:
-
+//
 //textureSampler: sampler2D object
 //TexCoord : (interpolated)  texture coordinates in fragment shader
 texture(textureSampler, TexCoord);
@@ -183,6 +183,38 @@ glUniform1i(uniformTextureSampler, textureUnitNumber);
 ```c
 glActiveTexture(GL_TEXTURE0);
 glBindTexture(GL_TEXTURE_2D textureId);
+```
+- example
+```c
+//assume you save texture coordinates after vertices
+GLfloat data[] = {
+  //x,y,z, s|u,t|v
+  1,1,1, 0.0, 0.0
+  //...
+};
+//then for vertices
+    glVertexAttribPointer(
+      0, 
+      3, // number of values per vertex
+    GL_FLOAT,
+    GL_FALSE, 
+    sizeof(float)*5, //data stride
+    0);
+    // Enable Position Attribute
+    glEnableVertexAttribArray(0);
+
+//for textures: offset after vertices (*3)
+    glVertexAttribPointer(
+      1, 
+      2,  // number of values per texel
+    GL_FLOAT, 
+    GL_FALSE, 
+    sizeof(float)*5, (void*)sizeof(float)*3);
+    glEnableVertexAttribArray(1);
+```
+```c
+```
+```c
 ```
 ```c
 ```

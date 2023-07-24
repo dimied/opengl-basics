@@ -3,7 +3,7 @@ GLSL_FILES = glsl.c glsl_util.c gl_basics.c
 
 SHADER_FILES = gl_errors.c gl_shaders.c
 
-EXAMPLES_FILES = examples.c
+EXAMPLES_FILES = examples.c math_util.c
 
 #LDFLAGS='-ldl'
 
